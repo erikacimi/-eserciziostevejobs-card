@@ -37,7 +37,7 @@ export function ContextProvider({ children }: Props) {
       setCart([...cart, { id: idProduct, quantity: 1 }]);
     }
   };
-
+  
   const removeFromCart = (idProduct: Product["id"]) => {
     const newCart = cart.reduce((acc, el) => {
       if (el.id === idProduct) {
