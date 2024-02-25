@@ -1,5 +1,6 @@
 import { ReactNode, createContext, useEffect, useState } from "react";
 import { Cart, Product, TContext } from "./declarations";
+import router from "next/router";
 
 export const AppContext = createContext<TContext>({
   cart: [],
@@ -29,7 +30,7 @@ export function ContextProvider({ children }: Props) {
   const addToCart = (idProduct: Product["id"]) => {
     const found = cart.find((el) => el.id === idProduct);
     const foundProduct = products?.find((el) => el.id === idProduct);
-    
+    //if(!!foundProduct && foundProduct.qty > (found?.quantity ?? 0)){
     if(!!foundProduct && foundProduct.qty > 0){
       if (!!found) {
         const newCart = cart.map((el) => {
@@ -43,14 +44,9 @@ export function ContextProvider({ children }: Props) {
           setCart([...cart, { ...foundProduct, quantity: 1 }]);
         }
       }
-      setProducts(products => products!.map(product => {
-        if (product.id === idProduct) {
-          return { ...product, qty: product.qty - 1 };
-        }
-        return product;
-      }));
+      getProductQuantity(idProduct);
   }else{
-    console.log("Non abbiamo la disponibilità per questa quantità di prodotto o il prodotto non è più disponibile");
+    console.log("Il prodotto non è più disponibile");
   }
   };
   
@@ -68,12 +64,7 @@ export function ContextProvider({ children }: Props) {
       }
     }, [] as Cart);
     setCart(newCart);
-    setProducts(products => products!.map(product => {
-      if (product.id === idProduct) {
-        return { ...product, qty: product.qty + 1 };
-      }
-      return product;
-    }));
+    getProductQuantity(idProduct);
   };
 
   const pay = () => {
@@ -101,10 +92,18 @@ export function ContextProvider({ children }: Props) {
   };
 
   const getProductQuantity = (idProduct: Product["id"]) => {
-    return 0;
+    setProducts(products => products!.map(product => {
+      if (product.id === idProduct) {
+        if(router.pathname === "/"){
+          return { ...product, qty: product.qty - 1 };
+        }else if(router.pathname === "/cart"){
+          return { ...product, qty: product.qty + 1 };
+        }
+        return product;
+      }
+      return product;
+    }));
   };
-
-  
 
   const calculateTotalPrice = () => {
     if (!cart) return 0;

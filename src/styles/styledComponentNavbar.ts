@@ -33,5 +33,5 @@ export const StyledDivCart = styled.div<{ $isActive: boolean }>(({ $isActive }) 
 
 export const StyledLink = styled(Link)({
   textDecoration: 'none',
-  color: 'black'
+  color: 'black',
 });

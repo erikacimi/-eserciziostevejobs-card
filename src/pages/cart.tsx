@@ -1,6 +1,7 @@
 import { AppContext } from "@/ContextProvider";
 import { ButtonPay } from "@/components/ButtonPay";
 import { CardProduct } from "@/components/CardProduct";
+import { StyledLinkButton } from "@/styles/styledComponentButton";
 import { Grid } from "@/styles/styledComponentCard";
 import { useContext } from "react";
 import styled from "styled-components";
@@ -27,7 +28,9 @@ export default function Cart() {
       <DivTotalPrice>
         <p><b>Total Price:</b> {calculateTotalPrice()}</p>
       </DivTotalPrice>
-      <ButtonPay />
+      <StyledLinkButton href="/success">
+        <ButtonPay />
+      </StyledLinkButton>
     </>
   );
 }
