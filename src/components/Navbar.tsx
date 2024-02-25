@@ -1,41 +1,5 @@
-import Link from "next/link";
+import { ContainerNavbar, StyledDivHome, StyledLink, StyledDivCart } from "@/styles/styledComponentNavbar";
 import { useRouter } from "next/router";
-import styled from "styled-components";
-
-const ContainerNavbar = styled.div({
-    display: 'flex',
-    justifyContent: 'end',
-    marginLeft: '50px',
-    marginRight: '100px',
-    marginBottom:'50px',
-    '@media (max-width: 400px)': {
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-});
-
-const StyledDivHome = styled.div<{ $isActive: boolean }>(({ $isActive }) => ({
-    fontSize: ($isActive) ? '1.875em' :'1.2em',
-    marginLeft: '20px',
-    marginRight: '20px',
-    alignItems: 'center',
-    justifyContent: 'center',
-    display: 'flex',
-}));
-
-const StyledDivCart = styled.div<{ $isActive: boolean }>(({ $isActive }) => ({
-    fontSize: ($isActive) ? '1.875em' :'1.2em',
-    marginLeft: '20px',
-    marginRight: '20px',
-    alignItems: 'center',
-    justifyContent: 'center',
-    display: 'flex'
-}));
-
-const StyledLink = styled(Link)({
-  textDecoration: 'none',
-  color: 'black'
-});
 
 export function Navbar(): JSX.Element {
   const router = useRouter();

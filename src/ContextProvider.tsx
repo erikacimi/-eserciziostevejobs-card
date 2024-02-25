@@ -27,22 +27,30 @@ export function ContextProvider({ children }: Props) {
 
   const addToCart = (idProduct: Product["id"]) => {
     const found = cart.find((el) => el.id === idProduct);
-    if (!!found) {
-      const newCart = cart.map((el) => {
-        if (el.id !== idProduct) return el;
-        return { id: el.id, quantity: el.quantity + 1 };
-      });
-      setCart(newCart);
-    } else {
-      setCart([...cart, { id: idProduct, quantity: 1 }]);
-    }
+    const foundProduct = products?.find((el) => el.id === idProduct);
+    if(!!foundProduct && foundProduct.qty > (found?.quantity ?? 0)){
+      if (!!found) {
+        const newCart = cart.map((el) => {
+          if (el.id !== idProduct) return el;
+          return { id: el.id, quantity: el.quantity + 1,  thumbnail: el.thumbnail, title: el.title, description: el.description, price: el.price};
+        });
+        setCart(newCart);
+      } else {
+        const foundProduct = products!.find((product) => product.id === idProduct);
+        if (foundProduct) {
+          setCart([...cart, { ...foundProduct, quantity: 1 }]);
+        }
+      }
+  }else{
+    console.log("Non abbiamo la disponibilità per questa quantità di prodotto o il prodotto non è più disponibile");
+  }
   };
   
   const removeFromCart = (idProduct: Product["id"]) => {
     const newCart = cart.reduce((acc, el) => {
       if (el.id === idProduct) {
         if (el.quantity > 1) {
-          acc.push({ id: el.id, quantity: el.quantity - 1 });
+          acc.push({ id: el.id, quantity: el.quantity - 1, thumbnail: el.thumbnail, title: el.title, description: el.description, price: el.price });
           return acc;
         }
         return acc;
