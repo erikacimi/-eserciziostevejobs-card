@@ -36,11 +36,11 @@ export function CardProduct({ product }: any) {
                 )}
             </ContainerPriceQty>
             {router.pathname === "/" ? (
-                <DivCart onClick={() => addToCart(product.id)}>
+                <DivCart onClick={() => addToCart(product.id)} disabled={product.qty === 0}>
                     <p>ADD TO CART</p>
                 </DivCart>
             ) : router.pathname === "/cart" ? (
-                <DivCart onClick={() => removeFromCart(product.id)}>
+                <DivCart onClick={() => removeFromCart(product.id)} disabled={false}>
                     <p>REMOVE</p>
                 </DivCart>
             ) : (
