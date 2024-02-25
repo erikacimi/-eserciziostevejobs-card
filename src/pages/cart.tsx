@@ -1,11 +1,17 @@
 import { AppContext } from "@/ContextProvider";
+import { ButtonPay } from "@/components/ButtonPay";
 import { CardProduct } from "@/components/CardProduct";
 import { Grid } from "@/styles/styledComponentCard";
 import { useContext } from "react";
+import styled from "styled-components";
+
+const DivTotalPrice = styled.div({
+  textAlign: 'center',
+  fontSize: '1.5em'
+})
 
 export default function Cart() {
-
-  const {cart} = useContext(AppContext);
+  const {cart, calculateTotalPrice} = useContext(AppContext);
 
   return (
     <>
@@ -18,6 +24,10 @@ export default function Cart() {
           <p>Loading...</p>
         )}
       </Grid>
+      <DivTotalPrice>
+        <p><b>Total Price:</b> {calculateTotalPrice()}</p>
+      </DivTotalPrice>
+      <ButtonPay />
     </>
   );
 }
