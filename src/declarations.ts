@@ -29,4 +29,5 @@ export interface TContext {
   pay: () => void;
   done: () => void;
   getProductQuantity: (idProduct: Product["id"]) => number;
+  calculateTotalPrice: () => number;
 }

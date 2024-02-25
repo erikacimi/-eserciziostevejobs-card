@@ -12,6 +12,7 @@ export const AppContext = createContext<TContext>({
   getProductQuantity: () => 0,
   loading: false,
   error: "",
+  calculateTotalPrice: () => 0
 });
 
 interface Props {
@@ -28,7 +29,8 @@ export function ContextProvider({ children }: Props) {
   const addToCart = (idProduct: Product["id"]) => {
     const found = cart.find((el) => el.id === idProduct);
     const foundProduct = products?.find((el) => el.id === idProduct);
-    if(!!foundProduct && foundProduct.qty > (found?.quantity ?? 0)){
+    
+    if(!!foundProduct && foundProduct.qty > 0){
       if (!!found) {
         const newCart = cart.map((el) => {
           if (el.id !== idProduct) return el;
@@ -41,6 +43,12 @@ export function ContextProvider({ children }: Props) {
           setCart([...cart, { ...foundProduct, quantity: 1 }]);
         }
       }
+      setProducts(products => products!.map(product => {
+        if (product.id === idProduct) {
+          return { ...product, qty: product.qty - 1 };
+        }
+        return product;
+      }));
   }else{
     console.log("Non abbiamo la disponibilità per questa quantità di prodotto o il prodotto non è più disponibile");
   }
@@ -60,6 +68,12 @@ export function ContextProvider({ children }: Props) {
       }
     }, [] as Cart);
     setCart(newCart);
+    setProducts(products => products!.map(product => {
+      if (product.id === idProduct) {
+        return { ...product, qty: product.qty + 1 };
+      }
+      return product;
+    }));
   };
 
   const pay = () => {
@@ -90,6 +104,17 @@ export function ContextProvider({ children }: Props) {
     return 0;
   };
 
+  
+
+  const calculateTotalPrice = () => {
+    if (!cart) return 0;
+
+    return cart.reduce((total, product) => {
+      const totalPriceForProduct = product.quantity > 1 ? product.price * product.quantity : product.price;
+      return total + totalPriceForProduct;
+    }, 0);
+  };
+
   useEffect(() => {
     getProducts();
   }, []);
@@ -107,6 +132,7 @@ export function ContextProvider({ children }: Props) {
         loading,
         error,
         done,
+        calculateTotalPrice,
       }}
     >
       {children}

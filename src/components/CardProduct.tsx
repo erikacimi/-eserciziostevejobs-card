@@ -13,7 +13,7 @@ export function CardProduct({ product }: any) {
     const router = useRouter();
 
     return (
-        <ContainerCard key={product.id}>
+        <ContainerCard>
             <img src={product.thumbnail}></img>
             <ContainerTitleAndDescription>
                 <h4>{product.title}</h4>
